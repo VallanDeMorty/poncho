@@ -21,6 +21,21 @@ module Startup =
             config
                 .AddCommand<AddDoing.Handler>("add-doing")
                 .WithDescription("adds a new doing to the journal")
+            |> ignore
+
+            config
+                .AddCommand<RemoveDoing.Handler>("remove-doing")
+                .WithDescription("removes a doing from the journal")
+            |> ignore
+
+            config
+                .AddCommand<SkipDoing.Handler>("skip-doing")
+                .WithDescription("skips a doing from the journal")
+            |> ignore
+
+            config
+                .AddCommand<ReplaceDoing.Handler>("replace-doing")
+                .WithDescription("replaces a doing from the journal")
             |> ignore)
 
         cli

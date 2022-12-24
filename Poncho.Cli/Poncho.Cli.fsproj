@@ -21,6 +21,9 @@
     <Compile Include="Commands/EmptyJournal.fs" />
     <Compile Include="Commands/Today.fs" />
     <Compile Include="Commands/AddDoing.fs" />
+    <Compile Include="Commands/RemoveDoing.fs" />
+    <Compile Include="Commands/ReplaceDoing.fs" />
+    <Compile Include="Commands/SkipDoing.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

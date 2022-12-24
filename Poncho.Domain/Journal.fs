@@ -48,6 +48,9 @@ module Journal =
           newDoings: DoingName list
           removedDoings: DoingName list }
 
+    let isEntryToday entry =
+        entry.date = DateOnly.FromDateTime DateTime.Now
+
     type Metrics = { doingsPerDay: int }
 
     type Journal =
