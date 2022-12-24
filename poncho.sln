@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Poncho.Domain", "Poncho.Domain\Poncho.Domain.fsproj", "{52BFB906-19C6-4C42-9B93-937A84103778}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Poncho.Cli", "Poncho.Cli\Poncho.Cli.fsproj", "{1A2CD4F7-1F18-4AF6-BC54-FBE8E7FB3C27}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Poncho.Local", "Poncho.Local\Poncho.Local.fsproj", "{FB5F055A-A461-409F-A015-523B041EB142}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{52BFB906-19C6-4C42-9B93-937A84103778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52BFB906-19C6-4C42-9B93-937A84103778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52BFB906-19C6-4C42-9B93-937A84103778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2CD4F7-1F18-4AF6-BC54-FBE8E7FB3C27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2CD4F7-1F18-4AF6-BC54-FBE8E7FB3C27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2CD4F7-1F18-4AF6-BC54-FBE8E7FB3C27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2CD4F7-1F18-4AF6-BC54-FBE8E7FB3C27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB5F055A-A461-409F-A015-523B041EB142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB5F055A-A461-409F-A015-523B041EB142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB5F055A-A461-409F-A015-523B041EB142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB5F055A-A461-409F-A015-523B041EB142}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

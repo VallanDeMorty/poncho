@@ -38,7 +38,8 @@ module Journal =
 
     let initialize journal metrics = { journal with metrics = metrics }
 
-    let daysDifference oneDateMs otherDateMs = (oneDateMs - otherDateMs) / 86400000
+    let daysDifference oneDateMs otherDateMs =
+        (oneDateMs - otherDateMs) / 86400000L |> int
 
     let planDay journal entry =
         { entry with
@@ -57,10 +58,9 @@ module Journal =
                 journal
             else
                 let daysDifference =
-                    daysDifference
-                        (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
-                        (DateTimeOffset(lastEntry.date.ToDateTime(TimeOnly.MinValue))
-                            .ToUnixTimeMilliseconds())
+                    DateTimeOffset(lastEntry.date.ToDateTime(TimeOnly.MinValue))
+                        .ToUnixTimeMilliseconds()
+                    |> daysDifference (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
 
                 let newEntry =
                     { date = DateOnly.FromDateTime DateTime.UtcNow
