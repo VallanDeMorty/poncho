@@ -14,6 +14,11 @@ module Startup =
             |> ignore
 
             config
+                .AddCommand<Today.Handler>("today")
+                .WithDescription("initiates today entry to the journal")
+            |> ignore
+
+            config
                 .AddCommand<AddDoing.Handler>("add-doing")
                 .WithDescription("adds a new doing to the journal")
             |> ignore)

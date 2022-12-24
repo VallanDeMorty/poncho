@@ -1,18 +1,11 @@
 ﻿namespace Poncho.Local
 
 module LocalJournal =
-    open FSharp.Json
-    open System.IO
+    open FsToolkit.ErrorHandling
+    open JsonJournal
     open Poncho.Domain.Journal
     open System
-    open FsToolkit.ErrorHandling
-
-    let serializeJournal journal =
-        try
-            Json.serialize journal |> Ok
-        with :? Exception as ex ->
-            let message = sprintf "Failed to serialize journal: %s" ex.Message
-            Error message
+    open System.IO
 
     let saveJournal (journal: Journal) path =
         result {
@@ -25,13 +18,6 @@ module LocalJournal =
                 let message = sprintf "Failed to save journal: %s" ex.Message
                 return! Error message
         }
-
-    let deserializeJournal json =
-        try
-            Json.deserialize<Journal> json |> Ok
-        with :? Exception as ex ->
-            let message = sprintf "Failed to deserialize journal: %s" ex.Message
-            Error message
 
     let loadJournal path =
         try

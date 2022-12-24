@@ -68,7 +68,7 @@ module Journal =
     let daysDifference oneDateMs otherDateMs =
         (oneDateMs - otherDateMs) / 86400000L |> int
 
-    let planDay journal entry =
+    let private planDay journal entry =
         { entry with
             plan =
                 entry.doings
@@ -79,7 +79,15 @@ module Journal =
 
     let today journal =
         match lastEntry journal with
-        | None -> emptyJournal
+        | None ->
+            { journal with
+                history =
+                    [ { date = DateOnly.FromDateTime DateTime.Today
+                        doings = []
+                        plan = []
+                        commitments = []
+                        newDoings = []
+                        removedDoings = [] } ] }
         | Some(lastEntry) ->
             if lastEntry.date = DateOnly.FromDateTime DateTime.Today then
                 journal
