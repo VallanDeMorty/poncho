@@ -11,6 +11,11 @@ module Startup =
             config
                 .AddCommand<EmptyJournal.Handler>("empty-journal")
                 .WithDescription("creates an empty journal")
+            |> ignore
+
+            config
+                .AddCommand<AddDoing.Handler>("add-doing")
+                .WithDescription("adds a new doing to the journal")
             |> ignore)
 
         cli

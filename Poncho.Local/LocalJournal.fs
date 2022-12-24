@@ -14,7 +14,7 @@ module LocalJournal =
             let message = sprintf "Failed to serialize journal: %s" ex.Message
             Error message
 
-    let saveJournal journal path =
+    let saveJournal (journal: Journal) path =
         result {
             let! json = serializeJournal journal
 

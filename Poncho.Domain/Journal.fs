@@ -13,6 +13,33 @@ module Journal =
 
     let isThresholdReached doing = doing.current >= doing.threshold
 
+    let verifyDoing doing =
+        let errors =
+            [ if doing.name.Length = 0 then
+                  Some("Name cannot be empty")
+              else
+                  None
+              if doing.title.Length = 0 then
+                  Some("Title cannot be empty")
+              else
+                  None
+              if doing.threshold <= 0 then
+                  Some("Threshold must be greater than 0")
+              else
+                  None
+              if doing.current < 0 then
+                  Some("Current must be greater than or equal to 0")
+              else
+                  None ]
+
+        match errors |> List.filter Option.isSome with
+        | [] -> Ok(doing)
+        | _ ->
+            errors
+            |> List.choose id
+            |> List.fold (fun message error -> $"{message}{error}. ") ""
+            |> Error
+
     type JournalEntry =
         { date: DateOnly
           doings: Doing list

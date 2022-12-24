@@ -19,6 +19,7 @@
   <ItemGroup>
     <Compile Include="Console/Format.fs" />
     <Compile Include="Commands/EmptyJournal.fs" />
+    <Compile Include="Commands/AddDoing.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

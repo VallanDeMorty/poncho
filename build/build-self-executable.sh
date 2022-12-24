@@ -7,7 +7,6 @@ dotnet publish ./Poncho.Cli/Poncho.Cli.fsproj \
     --self-contained True \
     --runtime osx.11.0-x64 \
     --verbosity Normal \
-    /property:PublishTrimmed=True \
     /property:PublishSingleFile=True \
     /property:IncludeNativeLibrariesForSelfExtract=True \
     /property:DebugType=None \
