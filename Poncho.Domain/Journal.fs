@@ -135,7 +135,10 @@ module Journal =
     let addDoing journal doing =
         lastEntryAsResult journal
         |> Result.bind (fun lastEntry ->
-            match lastEntry.doings |> List.tryFind (fun doing -> doing.name = doing.name) with
+            match
+                lastEntry.doings
+                |> List.tryFind (fun presentDoing -> presentDoing.name = doing.name)
+            with
             | Some(_) -> Error($"Doing {doing.name} is already present.")
             | _ -> Ok(lastEntry))
         |> Result.map (fun lastEntry ->
@@ -153,12 +156,17 @@ module Journal =
             | None -> Error($"Doing {doingName} is not present.")
             | _ -> Ok(lastEntry))
         |> Result.map (fun lastEntry ->
-            let newEntry =
+            match lastEntry.newDoings |> List.tryFind (fun name -> name = doingName) with
+            | Some(_) ->
                 { lastEntry with
                     doings = lastEntry.doings |> List.filter (fun doing -> doing.name <> doingName)
-                    removedDoings = doingName :: lastEntry.removedDoings }
-
-            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
+                    newDoings = lastEntry.newDoings |> List.filter (fun name -> name <> doingName) }
+            | _ ->
+                { lastEntry with
+                    doings = lastEntry.doings |> List.filter (fun doing -> doing.name <> doingName)
+                    removedDoings = doingName :: lastEntry.removedDoings })
+        |> Result.map (fun newEntry ->
+            { journal with history = newEntry :: List.filter (fun x -> x.date <> newEntry.date) journal.history })
 
     let skip journal doingName =
         lastEntryAsResult journal

@@ -20,9 +20,7 @@ module LocalJournal =
         }
 
     let saveIfNotExists (journal: Journal) path =
-        let path = Path.Combine(path, "poncho.journal.json")
-
-        match File.Exists(path) with
+        match File.Exists(Path.Combine(path, "poncho.journal.json")) with
         | true -> Ok()
         | false -> saveJournal journal path
 
