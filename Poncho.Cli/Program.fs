@@ -9,7 +9,7 @@ module Startup =
 
         cli.Configure(fun config ->
             config
-                .AddCommand<EmptyJournal.Handler>("empty-journal")
+                .AddCommand<EmptyJournal.Handler>("journal")
                 .WithDescription("creates an empty journal")
             |> ignore
 
@@ -19,22 +19,22 @@ module Startup =
             |> ignore
 
             config
-                .AddCommand<AddDoing.Handler>("add-doing")
+                .AddCommand<AddDoing.Handler>("add")
                 .WithDescription("adds a new doing to the journal")
             |> ignore
 
             config
-                .AddCommand<RemoveDoing.Handler>("remove-doing")
+                .AddCommand<RemoveDoing.Handler>("remove")
                 .WithDescription("removes a doing from the journal")
             |> ignore
 
             config
-                .AddCommand<SkipDoing.Handler>("skip-doing")
+                .AddCommand<SkipDoing.Handler>("skip")
                 .WithDescription("skips a doing from the journal")
             |> ignore
 
             config
-                .AddCommand<ReplaceDoing.Handler>("replace-doing")
+                .AddCommand<ReplaceDoing.Handler>("replace")
                 .WithDescription("replaces a doing from the journal")
             |> ignore)
 

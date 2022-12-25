@@ -17,6 +17,10 @@ module EmptyJournal =
         [<CommandOption("-d|--dir")>]
         member val dir: string Option = dir
 
+        [<Description("force rewrite")>]
+        [<CommandOption("-f|--force")>]
+        member val force: bool = false
+
     type Handler() =
         inherit Command<Settings>()
 
@@ -28,7 +32,12 @@ module EmptyJournal =
 
             let journal = Journal.emptyJournal |> Journal.initialize <| { doingsPerDay = 3 }
 
-            LocalJournal.saveJournal journal dir
+            let saveJournal =
+                match settings.force with
+                | true -> LocalJournal.saveJournal
+                | false -> LocalJournal.saveIfNotExists
+
+            saveJournal journal dir
             |> Result.map (fun _ -> 0)
             |> Result.mapError (fun failure -> AnsiConsole.Markup(formatError failure))
             |> Result.defaultWith (fun _ -> 1)

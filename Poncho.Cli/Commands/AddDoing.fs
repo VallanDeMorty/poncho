@@ -46,7 +46,8 @@ module AddDoing =
                       current = 0 }
                 )
 
-            LocalJournal.loadJournal dir |> Result.map2 Journal.addDoing <| newDoing
+            LocalJournal.loadJournal dir |> Result.zip <| newDoing
+            |> Result.bind (fun (journal, doing) -> Journal.addDoing journal doing)
             |> Result.bind (fun journal -> LocalJournal.saveJournal journal dir)
             |> Result.map (fun _ -> 0)
             |> Result.mapError (fun failure -> AnsiConsole.Markup(formatError failure))

@@ -5,11 +5,19 @@ module Journal =
 
     type DoingName = string
 
+    [<CustomEquality; NoComparison>]
     type Doing =
         { name: DoingName
           title: string
           threshold: int
           current: int }
+
+        override this.Equals other =
+            match other with
+            | :? Doing as d -> d.name.Equals this.name
+            | _ -> false
+
+        override this.GetHashCode() = this.name.GetHashCode()
 
     let isThresholdReached doing = doing.current >= doing.threshold
 
@@ -66,6 +74,11 @@ module Journal =
         | [] -> None
         | entries -> Some(entries |> List.sortBy (fun x -> x.date) |> List.last)
 
+    let lastEntryAsResult journal =
+        match lastEntry journal with
+        | None -> Error("No entries found in journal.")
+        | Some(entry) -> Ok(entry)
+
     let initialize journal metrics = { journal with metrics = metrics }
 
     let daysDifference oneDateMs otherDateMs =
@@ -120,44 +133,62 @@ module Journal =
                 { journal with history = plannedNewEntry :: journal.history }
 
     let addDoing journal doing =
-        match lastEntry journal with
-        | None -> journal
-        | Some(entry) ->
+        lastEntryAsResult journal
+        |> Result.map (fun lastEntry ->
             let newEntry =
-                { entry with
-                    doings = doing :: entry.doings
-                    newDoings = doing.name :: entry.newDoings }
+                { lastEntry with
+                    doings = doing :: lastEntry.doings
+                    newDoings = doing.name :: lastEntry.newDoings }
 
-            { journal with history = newEntry :: List.filter (fun x -> x.date <> entry.date) journal.history }
+            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
 
     let removeDoing journal doingName =
-        match lastEntry journal with
-        | None -> journal
-        | Some(entry) ->
+        lastEntryAsResult journal
+        |> Result.bind (fun lastEntry ->
+            match lastEntry.doings |> List.tryFind (fun doing -> doing.name = doingName) with
+            | None -> Error($"Doing {doingName} is not present.")
+            | _ -> Ok(lastEntry))
+        |> Result.map (fun lastEntry ->
             let newEntry =
-                { entry with
-                    doings = entry.doings |> List.filter (fun doing -> doing.name <> doingName)
-                    removedDoings = doingName :: entry.removedDoings }
+                { lastEntry with
+                    doings = lastEntry.doings |> List.filter (fun doing -> doing.name <> doingName)
+                    removedDoings = doingName :: lastEntry.removedDoings }
 
-            { journal with history = newEntry :: List.filter (fun x -> x.date <> entry.date) journal.history }
+            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
 
     let skip journal doingName =
-        match lastEntry journal with
-        | None -> journal
-        | Some(entry) ->
+        lastEntryAsResult journal
+        |> Result.bind (fun lastEntry ->
+            match lastEntry.doings |> List.tryFind (fun doing -> doing.name = doingName) with
+            | None -> Error($"Doing {doingName} is not present.")
+            | _ -> Ok(lastEntry))
+        |> Result.map (fun lastEntry ->
             let newEntry =
-                { entry with commitments = entry.commitments |> List.filter (fun name -> name <> doingName) }
+                { lastEntry with commitments = lastEntry.commitments |> List.filter (fun name -> name <> doingName) }
 
-            { journal with history = newEntry :: List.filter (fun x -> x.date <> entry.date) journal.history }
+            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
 
     let replace journal replacableDoing newCommitment =
-        match lastEntry journal with
-        | None -> journal
-        | Some(entry) ->
+        lastEntryAsResult journal
+        |> Result.bind (fun lastEntry ->
+            let doingErrors =
+                [ if lastEntry.doings |> List.exists (fun doing -> doing.name = replacableDoing) then
+                      None
+                  else
+                      Some($"Doing {replacableDoing} is not present")
+                  if lastEntry.doings |> List.exists (fun doing -> doing.name = newCommitment) then
+                      None
+                  else
+                      Some($"Doing {newCommitment} is not present") ]
+
+            match doingErrors |> List.filter Option.isSome with
+            | [] -> Ok lastEntry
+            | errors -> errors |> List.map Option.get |> String.concat ". " |> Error)
+        |> Result.map (fun lastEntry ->
             let newEntry =
-                { entry with
+                { lastEntry with
                     commitments =
-                        entry.commitments
+                        lastEntry.commitments
                         |> List.map (fun doing -> if doing = replacableDoing then newCommitment else doing) }
 
-            { journal with history = newEntry :: List.filter (fun x -> x.date <> entry.date) journal.history }
+            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })

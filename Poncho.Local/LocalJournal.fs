@@ -19,6 +19,13 @@ module LocalJournal =
                 return! Error message
         }
 
+    let saveIfNotExists (journal: Journal) path =
+        let path = Path.Combine(path, "poncho.journal.json")
+
+        match File.Exists(path) with
+        | true -> Ok()
+        | false -> saveJournal journal path
+
     let loadJournal path =
         try
             let path = Path.Combine(path, "poncho.journal.json")

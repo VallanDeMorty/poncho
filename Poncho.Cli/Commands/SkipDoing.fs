@@ -31,7 +31,7 @@ module SkipDoing =
                 |> Option.defaultWith (fun () -> Environment.CurrentDirectory)
 
             LocalJournal.loadJournal dir
-            |> Result.map (fun journal -> Journal.skip journal settings.name)
+            |> Result.bind (fun journal -> Journal.skip journal settings.name)
             |> Result.bind (fun journal -> LocalJournal.saveJournal journal dir)
             |> Result.map (fun _ -> 0)
             |> Result.mapError (fun failure -> AnsiConsole.Markup(formatError failure))
