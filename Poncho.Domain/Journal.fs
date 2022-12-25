@@ -134,6 +134,10 @@ module Journal =
 
     let addDoing journal doing =
         lastEntryAsResult journal
+        |> Result.bind (fun lastEntry ->
+            match lastEntry.doings |> List.tryFind (fun doing -> doing.name = doing.name) with
+            | Some(_) -> Error($"Doing {doing.name} is already present.")
+            | _ -> Ok(lastEntry))
         |> Result.map (fun lastEntry ->
             let newEntry =
                 { lastEntry with
