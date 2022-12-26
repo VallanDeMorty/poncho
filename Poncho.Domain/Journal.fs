@@ -132,22 +132,45 @@ module Journal =
 
                 { journal with history = plannedNewEntry :: journal.history }
 
-    let addDoing journal doing =
+    let private addDoing entry doing =
+        match
+            entry.doings
+            |> List.tryFind (fun presentDoing -> presentDoing.name = doing.name)
+        with
+        | Some(_) -> Error($"Doing {doing.name} is already present.")
+        | _ ->
+            { entry with
+                doings = doing :: entry.doings
+                newDoings = doing.name :: entry.newDoings }
+            |> Ok
+
+    let addDoingPerformLastTime journal doing lastDate =
         lastEntryAsResult journal
         |> Result.bind (fun lastEntry ->
-            match
-                lastEntry.doings
-                |> List.tryFind (fun presentDoing -> presentDoing.name = doing.name)
-            with
-            | Some(_) -> Error($"Doing {doing.name} is already present.")
+            match lastDate > DateTime.UtcNow with
+            | true -> Error("Last date cannot be in the future.")
             | _ -> Ok(lastEntry))
         |> Result.map (fun lastEntry ->
-            let newEntry =
-                { lastEntry with
-                    doings = doing :: lastEntry.doings
-                    newDoings = doing.name :: lastEntry.newDoings }
+            let daysDifference =
+                DateTimeOffset(lastDate).ToUnixTimeMilliseconds()
+                |> daysDifference (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
 
-            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
+            (lastEntry, { doing with current = daysDifference % doing.threshold }))
+        |> Result.bind (fun (lastEntry, newDoing) -> addDoing lastEntry newDoing)
+        |> Result.map (fun newEntry ->
+            { journal with
+                history =
+                    newEntry
+                    :: List.filter (fun entry -> entry.date <> newEntry.date) journal.history })
+
+    let addUnknowDoing journal doing =
+        lastEntryAsResult journal
+        |> Result.bind (fun lastEntry -> addDoing lastEntry { doing with current = doing.threshold })
+        |> Result.map (fun newEntry ->
+            { journal with
+                history =
+                    newEntry
+                    :: List.filter (fun entry -> entry.date <> newEntry.date) journal.history })
 
     let removeDoing journal doingName =
         lastEntryAsResult journal
