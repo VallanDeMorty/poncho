@@ -9,7 +9,7 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
 ## Key Ideas
 
 - Centric only around suggestions, it's totally up to you to decide what to do.
-- Trusts you, so it doesn't track your doings by preserving you do your best.
+- Trusts you, so it doesn't track your doings by preserving you do your best, i.e. no need to check the boxes each F* day anymore.
 - Built mainly to check the concept.
 
 ## Roadmap
@@ -21,6 +21,7 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
 - [x] Skip doings
 - [x] Replace doings
 - [ ] View the journal
+- [ ] Natural language date parsing
 
 ## License
 
