@@ -16,10 +16,15 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
 
 - [x] Initialize the journal
 - [x] Plan the day
+  - [ ] Print out the plan
 - [x] Add doings
+  - [ ] Print out the added doing
 - [x] Remove doings
+  - [ ] Print out the removed doing
 - [x] Skip doings
+  - [ ] Print out the skipped doing
 - [x] Replace doings
+  - [ ] Print out the replaced doing
 - [ ] View the journal
 - [x] Natural language date parsing
 
