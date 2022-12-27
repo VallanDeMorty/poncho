@@ -144,7 +144,7 @@ module Journal =
                 newDoings = doing.name :: entry.newDoings }
             |> Ok
 
-    let addDoingPerformLastTime journal doing lastDate =
+    let addDoingPerformedLastTime journal doing lastDate =
         lastEntryAsResult journal
         |> Result.bind (fun lastEntry ->
             match lastDate > DateTime.UtcNow with
@@ -163,7 +163,7 @@ module Journal =
                     newEntry
                     :: List.filter (fun entry -> entry.date <> newEntry.date) journal.history })
 
-    let addUnknowDoing journal doing =
+    let addUnknownDoing journal doing =
         lastEntryAsResult journal
         |> Result.bind (fun lastEntry -> addDoing lastEntry { doing with current = doing.threshold })
         |> Result.map (fun newEntry ->

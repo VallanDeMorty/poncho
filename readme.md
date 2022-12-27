@@ -21,7 +21,7 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
 - [x] Skip doings
 - [x] Replace doings
 - [ ] View the journal
-- [ ] Natural language date parsing
+- [x] Natural language date parsing
 
 ## License
 
