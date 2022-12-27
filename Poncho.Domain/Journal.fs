@@ -85,13 +85,16 @@ module Journal =
         (oneDateMs - otherDateMs) / 86400000L |> int
 
     let private planDay journal entry =
+        let plannedDoings =
+            entry.doings
+            |> List.sortByDescending (fun doing -> doing.current)
+            |> List.filter (fun doing -> isThresholdReached doing)
+            |> List.truncate journal.metrics.doingsPerDay
+            |> List.map (fun doing -> doing.name)
+
         { entry with
-            plan =
-                entry.doings
-                |> List.sortByDescending (fun doing -> doing.current)
-                |> List.filter (fun doing -> isThresholdReached doing)
-                |> List.take journal.metrics.doingsPerDay
-                |> List.map (fun doing -> doing.name) }
+            plan = plannedDoings
+            commitments = plannedDoings }
 
     let today journal =
         match lastEntry journal with
@@ -106,7 +109,13 @@ module Journal =
                         removedDoings = [] } ] }
         | Some(lastEntry) ->
             if lastEntry.date = DateOnly.FromDateTime DateTime.Today then
-                journal
+                match (lastEntry.commitments, lastEntry.plan) with
+                | ([], []) ->
+                    { journal with
+                        history =
+                            planDay journal lastEntry
+                            :: List.filter (fun entry -> entry.date <> lastEntry.date) journal.history }
+                | _ -> journal
             else
                 let daysDifference =
                     DateTimeOffset(lastEntry.date.ToDateTime(TimeOnly.MinValue))

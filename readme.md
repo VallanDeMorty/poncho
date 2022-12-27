@@ -21,6 +21,8 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
   - [ ] Print out the added doing
 - [x] Remove doings
   - [ ] Print out the removed doing
+- [ ] Commit doings
+  - [ ] Print out the committed doing
 - [x] Skip doings
   - [ ] Print out the skipped doing
 - [x] Replace doings
