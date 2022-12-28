@@ -12,6 +12,101 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
 - Trusts you, so it doesn't track your doings by preserving you do your best, i.e. no need to check the boxes each F* day anymore.
 - Built mainly to check the concept.
 
+## How to use
+
+### Create a journal
+
+```bash
+poncho journal
+```
+
+### Check the journal
+
+```bash
+poncho view
+```
+
+Example output:
+
+```bash
+Journal from December 28, 2022 to December 21, 2022
+
+December 28, 2022
+└── Doings
+    ├── Read a Book(read-book)
+    │   ├── Threshold: 3d
+    │   └── Current: 2d
+    └── Work the Plan Out (work-plan-out)
+        ├── Threshold: 2d
+        └── Current: 1d
+
+December 27, 2022
+├── Doings
+│   ├── Read a Book(read-book)
+│   │   ├── Threshold: 3d
+│   │   └── Current: 1d
+│   └── Work the Plan Out (work-plan-out)
+│       ├── Threshold: 2d
+│       └── Current: 2d
+├── Commitments
+│   └── Work the Plan Out
+└── New Doings
+    ├── Read a Book
+    └── Work the Plan Out
+```
+
+### Plan the day
+
+Use the `today` command to both plan the day and just initialize a new one.
+
+```bash
+poncho today
+```
+
+Example output:
+
+```bash
+December 27, 2022
+├── Doings
+│   ├── Read a Book(read-book)
+│   │   ├── Threshold: 3d
+│   │   └── Current: 1d
+│   └── Work the Plan Out (work-plan-out)
+│       ├── Threshold: 2d
+│       └── Current: 2d
+├── Commitments
+│   └── Work the Plan Out
+└── New Doings
+    ├── Read a Book
+    └── Work the Plan Out
+```
+
+### Add a doing
+
+```bash
+poncho add <name> <title> <threshold> -l "<last date when you did>"
+```
+
+The `l` flag is optional, however if you specify it you can describe it naturally like `21 days ago`.
+
+### Remove a doing
+
+```bash
+poncho remove <name>
+```
+
+### Skip a doing
+
+```bash
+poncho skip <name> 
+```
+
+### Replace a doing
+
+```bash
+poncho replace <original-name> <new-name>
+```
+
 ## Roadmap
 
 - [x] Initialize the journal
