@@ -13,11 +13,11 @@ module EmptyJournal =
     type Settings(dir) =
         inherit CommandSettings()
 
-        [<Description("directory")>]
+        [<Description("Directory to Look for the Journal")>]
         [<CommandOption("-d|--dir")>]
         member val dir: string Option = dir
 
-        [<Description("force rewrite")>]
+        [<Description("Force to Rewrite")>]
         [<CommandOption("-f|--force")>]
         member val force: bool = false
 

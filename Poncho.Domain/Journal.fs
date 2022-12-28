@@ -76,8 +76,17 @@ module Journal =
 
     let lastEntryAsResult journal =
         match lastEntry journal with
-        | None -> Error("No entries found in journal.")
+        | None -> Error("No entries found in the journal.")
         | Some(entry) -> Ok(entry)
+
+    let listEntriesTillDate journal tillDate =
+        match DateOnly.FromDateTime tillDate > DateOnly.FromDateTime DateTime.UtcNow with
+        | true -> Error("Date cannot be in the future.")
+        | false ->
+            journal.history
+            |> List.filter (fun entry -> entry.date >= DateOnly.FromDateTime tillDate)
+            |> List.sortByDescending (fun entry -> entry.date)
+            |> Ok
 
     let initialize journal metrics = { journal with metrics = metrics }
 
@@ -125,13 +134,13 @@ module Journal =
                 let newEntry =
                     { date = DateOnly.FromDateTime DateTime.UtcNow
                       doings =
-                        lastEntry.doings
-                        |> List.filter (fun doing -> lastEntry.commitments |> List.contains doing.name)
-                        |> List.map (fun doing -> { doing with current = 0 })
-                        |> List.append
-                        <| lastEntry.doings
-                        |> List.filter (fun doing -> lastEntry.commitments |> List.contains doing.name |> not)
-                        |> List.map (fun doing -> { doing with current = doing.current + daysDifference })
+                        List.append
+                            (lastEntry.doings
+                             |> List.filter (fun doing -> lastEntry.commitments |> List.contains doing.name)
+                             |> List.map (fun doing -> { doing with current = 1 }))
+                            (lastEntry.doings
+                             |> List.filter (fun doing -> lastEntry.commitments |> List.contains doing.name |> not)
+                             |> List.map (fun doing -> { doing with current = doing.current + daysDifference }))
                       plan = []
                       commitments = []
                       newDoings = []

@@ -21,7 +21,7 @@ module ReplaceDoing =
         [<CommandArgument(0, "<newName>")>]
         member val newName: string = newName
 
-        [<Description("directory")>]
+        [<Description("Directory to Look for the Journal")>]
         [<CommandOption("-d|--dir")>]
         member val dir: string Option = dir
 

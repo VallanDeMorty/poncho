@@ -17,7 +17,7 @@ module RemoveDoing =
         [<CommandArgument(0, "<name>")>]
         member val name: string = name
 
-        [<Description("directory")>]
+        [<Description("Directory to Look for the Journal")>]
         [<CommandOption("-d|--dir")>]
         member val dir: string Option = dir
 

@@ -10,32 +10,37 @@ module Startup =
         cli.Configure(fun config ->
             config
                 .AddCommand<EmptyJournal.Handler>("journal")
-                .WithDescription("creates an empty journal")
+                .WithDescription("Create an Empty Journal")
+            |> ignore
+
+            config
+                .AddCommand<ViewJournal.Handler>("view")
+                .WithDescription("View the Journal")
             |> ignore
 
             config
                 .AddCommand<Today.Handler>("today")
-                .WithDescription("initiates today entry to the journal")
+                .WithDescription("Initiate Today Entry to the Journal")
             |> ignore
 
             config
                 .AddCommand<AddDoing.Handler>("add")
-                .WithDescription("adds a new doing to the journal")
+                .WithDescription("Add a New Doing to the Journal")
             |> ignore
 
             config
                 .AddCommand<RemoveDoing.Handler>("remove")
-                .WithDescription("removes a doing from the journal")
+                .WithDescription("Remove a Doing from the Journal")
             |> ignore
 
             config
                 .AddCommand<SkipDoing.Handler>("skip")
-                .WithDescription("skips a doing from the journal")
+                .WithDescription("Skip a Doing from Today in the Journal")
             |> ignore
 
             config
                 .AddCommand<ReplaceDoing.Handler>("replace")
-                .WithDescription("replaces a doing from the journal")
+                .WithDescription("Replace a Commited Today Doing in the Journal")
             |> ignore)
 
         cli

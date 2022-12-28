@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>poncho</AssemblyName>
-    <Version>1.2.1</Version>
+    <Version>1.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +20,10 @@
 
   <ItemGroup>
     <Compile Include="Console/Format.fs" />
+    <Compile Include="Journal/JournalComponents.fs" />
+    <Compile Include="DateTime/NaturalDateTime.fs" />
     <Compile Include="Commands/EmptyJournal.fs" />
+    <Compile Include="Commands/ViewJournal.fs" />
     <Compile Include="Commands/Today.fs" />
     <Compile Include="Commands/AddDoing.fs" />
     <Compile Include="Commands/RemoveDoing.fs" />
