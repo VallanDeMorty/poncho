@@ -16,7 +16,7 @@ A suggestion CLI, which helps with daily decision-making by providing a selected
 
 - [x] Initialize the journal
 - [x] Plan the day
-  - [ ] Print out the plan
+  - [x] Print out the plan
 - [x] Add doings
   - [ ] Print out the added doing
 - [x] Remove doings
