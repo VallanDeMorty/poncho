@@ -28,20 +28,26 @@ module AddDoing =
 
         [<Description("Directory to Look for the Journal")>]
         [<CommandOption("-d|--dir")>]
-        member val dir: string Option = dir
+        member val dir: string =
+            match dir with
+            | null -> ""
+            | _ -> dir
 
         [<Description("Last Date When You Did It")>]
         [<CommandOption("-l|--last-date")>]
-        member val lastDate: string = lastDate
+        member val lastDate: string =
+            match lastDate with
+            | null -> ""
+            | _ -> lastDate
 
     type Handler() =
         inherit Command<Settings>()
 
         override _.Execute(_, settings) =
             let dir =
-                settings.dir
-                |> Option.bind (fun providedDir -> if providedDir.Length = 0 then None else Some(providedDir))
-                |> Option.defaultWith (fun () -> Environment.CurrentDirectory)
+                match settings.dir with
+                | dirPath when dirPath.Length > 0 -> dirPath
+                | _ -> Environment.CurrentDirectory
 
             let lastDate =
                 match settings.lastDate.Length with

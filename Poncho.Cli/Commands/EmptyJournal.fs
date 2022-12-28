@@ -10,25 +10,28 @@ module EmptyJournal =
     open Poncho.Cli.Console.Format
     open Spectre.Console
 
-    type Settings(dir) =
+    type Settings(force, dir) =
         inherit CommandSettings()
-
-        [<Description("Directory to Look for the Journal")>]
-        [<CommandOption("-d|--dir")>]
-        member val dir: string Option = dir
 
         [<Description("Force to Rewrite")>]
         [<CommandOption("-f|--force")>]
-        member val force: bool = false
+        member val force: bool = force
+
+        [<Description("Directory to Look for the Journal")>]
+        [<CommandOption("-d|--dir")>]
+        member val dir: string =
+            match dir with
+            | null -> ""
+            | _ -> dir
 
     type Handler() =
         inherit Command<Settings>()
 
         override _.Execute(_, settings) =
             let dir =
-                settings.dir
-                |> Option.bind (fun providedDir -> if providedDir.Length = 0 then None else Some(providedDir))
-                |> Option.defaultWith (fun () -> Environment.CurrentDirectory)
+                match settings.dir with
+                | dirPath when dirPath.Length > 0 -> dirPath
+                | _ -> Environment.CurrentDirectory
 
             let journal = Journal.emptyJournal |> Journal.initialize <| { doingsPerDay = 3 }
 

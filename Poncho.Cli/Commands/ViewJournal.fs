@@ -12,25 +12,31 @@ module ViewJournal =
     open System
     open System.ComponentModel
 
-    type Settings(dir) =
+    type Settings(tillDate, dir) =
         inherit CommandSettings()
 
         [<Description("Time Interval to Look")>]
         [<CommandOption("-i|--interval")>]
-        member val tillDate: string = "7 days ago"
+        member val tillDate: string =
+            match tillDate with
+            | null -> "7 days ago"
+            | _ -> tillDate
 
         [<Description("Directory to Look for the Journal")>]
         [<CommandOption("-d|--dir")>]
-        member val dir: string Option = dir
+        member val dir: string =
+            match dir with
+            | null -> ""
+            | _ -> dir
 
     type Handler() =
         inherit Command<Settings>()
 
         override _.Execute(_, settings) =
             let dir =
-                settings.dir
-                |> Option.bind (fun providedDir -> if providedDir.Length = 0 then None else Some(providedDir))
-                |> Option.defaultWith (fun () -> Environment.CurrentDirectory)
+                match settings.dir with
+                | dirPath when dirPath.Length > 0 -> dirPath
+                | _ -> Environment.CurrentDirectory
 
             let tillDate = NaturalDateTime.parse settings.tillDate
 

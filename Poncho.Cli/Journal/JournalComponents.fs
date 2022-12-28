@@ -5,7 +5,7 @@ module JournalComponents =
     open Poncho.Domain.Journal
     open System
 
-    let friendlyDateFormat = "MMMM dd, yyyy"
+    let private friendlyDateFormat = "MMMM dd, yyyy"
 
     let JournalTitle (fromDate: DateTime) (tillDate: DateTime) =
         $"[bold]Journal[/] from [bold]{fromDate.ToString(friendlyDateFormat)}[/] to [bold]{tillDate.ToString(friendlyDateFormat)}[/]"
