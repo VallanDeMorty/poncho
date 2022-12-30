@@ -10,6 +10,7 @@ module AddDoing =
     open Spectre.Console.Cli
     open System
     open System.ComponentModel
+    open Poncho.Cli.Journal.JournalComponents
 
     type Settings(name, title, threshold, lastDate, dir) =
         inherit CommandSettings()
@@ -71,6 +72,11 @@ module AddDoing =
             LocalJournal.loadJournal dir |> Result.zip <| newDoing
             |> Result.bind (fun (journal, doing) -> addDoing journal doing)
             |> Result.bind (fun journal -> LocalJournal.saveJournal journal dir)
+            |> Result.bind (fun _ -> LocalJournal.loadJournal dir)
+            |> Result.map (fun journal ->
+                match Journal.lastEntry journal with
+                | Some entry -> AnsiConsole.Write(EntryPreview entry) |> ignore
+                | None -> ())
             |> Result.map (fun _ -> 0)
             |> Result.mapError (fun failure -> AnsiConsole.Markup(formatError failure))
             |> Result.defaultWith (fun _ -> 1)

@@ -221,6 +221,18 @@ module Journal =
 
             { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
 
+    let commit journal doingName =
+        lastEntryAsResult journal
+        |> Result.bind (fun lastEntry ->
+            match lastEntry.doings |> List.tryFind (fun doing -> doing.name = doingName) with
+            | None -> Error($"Doing {doingName} is not present.")
+            | _ -> Ok(lastEntry))
+        |> Result.map (fun lastEntry ->
+            let newEntry =
+                { lastEntry with commitments = doingName :: lastEntry.commitments |> List.distinct }
+
+            { journal with history = newEntry :: List.filter (fun x -> x.date <> lastEntry.date) journal.history })
+
     let replace journal replacableDoing newCommitment =
         lastEntryAsResult journal
         |> Result.bind (fun lastEntry ->

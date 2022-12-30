@@ -116,7 +116,7 @@ poncho replace <original-name> <new-name>
   - [ ] Print out the added doing
 - [x] Remove doings
   - [ ] Print out the removed doing
-- [ ] Commit doings
+- [x] Commit doings
   - [ ] Print out the committed doing
 - [x] Skip doings
   - [ ] Print out the skipped doing

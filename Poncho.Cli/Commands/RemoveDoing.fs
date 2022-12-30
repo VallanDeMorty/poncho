@@ -9,6 +9,7 @@ module RemoveDoing =
     open System.ComponentModel
     open Poncho.Cli.Console.Format
     open Spectre.Console
+    open Poncho.Cli.Journal.JournalComponents
 
     type Settings(name, dir) =
         inherit CommandSettings()
@@ -36,6 +37,11 @@ module RemoveDoing =
             LocalJournal.loadJournal dir
             |> Result.bind (fun journal -> Journal.removeDoing journal settings.name)
             |> Result.bind (fun journal -> LocalJournal.saveJournal journal dir)
+            |> Result.bind (fun _ -> LocalJournal.loadJournal dir)
+            |> Result.map (fun journal ->
+                match Journal.lastEntry journal with
+                | Some entry -> AnsiConsole.Write(EntryPreview entry) |> ignore
+                | None -> ())
             |> Result.map (fun _ -> 0)
             |> Result.mapError (fun failure -> AnsiConsole.Markup(formatError failure))
             |> Result.defaultWith (fun _ -> 1)

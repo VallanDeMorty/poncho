@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>poncho</AssemblyName>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +27,7 @@
     <Compile Include="Commands/Today.fs" />
     <Compile Include="Commands/AddDoing.fs" />
     <Compile Include="Commands/RemoveDoing.fs" />
+    <Compile Include="Commands/CommitDoing.fs" />
     <Compile Include="Commands/ReplaceDoing.fs" />
     <Compile Include="Commands/SkipDoing.fs" />
     <Compile Include="Program.fs" />

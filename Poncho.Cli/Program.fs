@@ -34,6 +34,11 @@ module Startup =
             |> ignore
 
             config
+                .AddCommand<CommitDoing.Handler>("commit")
+                .WithDescription("Commit a Doing Today in the Journal")
+            |> ignore
+
+            config
                 .AddCommand<SkipDoing.Handler>("skip")
                 .WithDescription("Skip a Doing from Today in the Journal")
             |> ignore
