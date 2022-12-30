@@ -107,24 +107,6 @@ poncho skip <name>
 poncho replace <original-name> <new-name>
 ```
 
-## Roadmap
-
-- [x] Initialize the journal
-- [x] Plan the day
-  - [x] Print out the plan
-- [x] Add doings
-  - [ ] Print out the added doing
-- [x] Remove doings
-  - [ ] Print out the removed doing
-- [x] Commit doings
-  - [ ] Print out the committed doing
-- [x] Skip doings
-  - [ ] Print out the skipped doing
-- [x] Replace doings
-  - [ ] Print out the replaced doing
-- [x] View the journal
-- [x] Natural language date parsing
-
 ## License
 
 MIT
